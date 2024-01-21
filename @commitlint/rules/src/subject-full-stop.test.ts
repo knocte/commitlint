@@ -8,6 +8,7 @@ const messages = {
 	standardScopeWith: `type(scope): subject.\n`,
 	nonStandardScopeWith: 'type.scope: subject.\n',
 	ellipsisMessage: 'test: subject ends with ellipsis...',
+	superShortMsg: 'ok',
 };
 
 const parsed = {
@@ -17,6 +18,7 @@ const parsed = {
 	standardScopeWith: parse(messages.standardScopeWith),
 	nonStandardScopeWith: parse(messages.nonStandardScopeWith),
 	ellipsisMessage: parse(messages.ellipsisMessage),
+	superShortMsg: parse(messages.superShortMsg),
 };
 
 test('empty against "always" should succeed', async () => {
@@ -80,3 +82,10 @@ test('ellipsis is not fullstop so commit title ending with it against "never ." 
 	const expected = true;
 	expect(actual).toEqual(expected);
 });
+
+test('super short title still works', async () => {
+	const [actual] = subjectFullStop(await parsed.superShortMsg, 'never', '.');
+	const expected = true;
+	expect(actual).toEqual(expected);
+});
+
