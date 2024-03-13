@@ -4,7 +4,7 @@ import type {GitOptions} from 'git-raw-commits';
 import {getHistoryCommits} from './get-history-commits.js';
 import {getEditCommit} from './get-edit-commit.js';
 
-import {execa} from 'execa';
+import {spawnSync} from 'child_process';
 
 interface GetCommitMessageOptions {
 	cwd?: string;
@@ -26,8 +26,9 @@ export default async function getCommitMessages(
 	}
 
 	if (last) {
-		const executeGitCommand = await execa('git', ['log', '-1', '--pretty=%B']);
-		return [executeGitCommand.stdout];
+		const executeGit = spawnSync('git', ['log', '-1', '--pretty=%B']);
+
+		return [executeGit.stdout.toString()];
 	}
 
 	let gitOptions: GitOptions = {from, to};
